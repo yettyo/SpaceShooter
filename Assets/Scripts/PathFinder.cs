@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class PathFinder : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    [SerializeField] WaveConfigSO waveConfig;
+    List<Transform> waypoints;
+    int waypointIndex = 0;
+
+    void Start() {
+        waypoints = waveConfig.GetWaypoints();
+        transform.position = waypoints[waypointIndex].position;
+    }
+    void Update() {
+        FollowPath();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void FollowPath() {
+        if(waypointIndex < waypoints.Count) {
+            Vector3 targetPosition = waypoints[waypointIndex].position;
+            float delta = waveConfig.GetMovementSpeed() * Time.deltaTime;
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, delta);
+            if(transform.position == targetPosition) {
+                waypointIndex++;
+            }
+        }
+        else {
+            Destroy(gameObject);
+        }
     }
 }
