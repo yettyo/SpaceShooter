@@ -12,7 +12,11 @@ public class Player : MonoBehaviour
     Vector2 minBounds;
     Vector2 maxBounds;
 
-    private void Start()
+    Shooter shooter;
+    void Awake() {
+        shooter = GetComponent<Shooter>();
+    }
+    void Start()
     {
         initBounds();
         boxCollider = GetComponent<BoxCollider2D>();
@@ -33,5 +37,11 @@ public class Player : MonoBehaviour
         Camera cam = Camera.main;
         minBounds = cam.ScreenToWorldPoint(new Vector2(0, 0));
         maxBounds = cam.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+    }
+
+    void onFire(Lean.Touch.LeanFinger finger) {
+        if(shooter != null) {
+            shooter.isFiring = finger.Down;
+        }
     }
 }
