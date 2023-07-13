@@ -38,9 +38,7 @@ public class Player : MonoBehaviour
         minBounds = cam.ScreenToWorldPoint(new Vector2(0, 0));
         maxBounds = cam.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
     }
-
-    //When player presses down on the screen, the player should fire projectiles.
-    //Lean Touch
+    
     void Update()
     {
         if (Input.touchCount > 0) {
