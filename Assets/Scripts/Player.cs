@@ -39,9 +39,22 @@ public class Player : MonoBehaviour
         maxBounds = cam.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
     }
 
-    void onFire(Lean.Touch.LeanFinger finger) {
-        if(shooter != null) {
-            shooter.isFiring = finger.Down;
+    //When player presses down on the screen, the player should fire projectiles.
+    //Lean Touch
+    void Update()
+    {
+        if (Input.touchCount > 0) {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began) {
+                //if touch is on GUI, don't fire
+                if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(touch.fingerId)) {
+                    return;
+                }
+                shooter.isFiring = true;
+            }
+            else if (touch.phase == TouchPhase.Ended) {
+                shooter.isFiring = false;
+            }
         }
     }
 }

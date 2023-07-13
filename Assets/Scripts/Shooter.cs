@@ -17,20 +17,26 @@ public class Shooter : MonoBehaviour
     }
     void Update()
     {
-        Fire();
+         Fire();    
     }
-
+    
     void Fire() {
-        if(isFiring) {
+        if(isFiring && firingCoroutine == null) {
             firingCoroutine = StartCoroutine(FireContinuously());
-        } else {
+        } 
+        else if(!isFiring && firingCoroutine != null) {
             StopCoroutine(firingCoroutine);
+            firingCoroutine = null;
         }
     }
 
     IEnumerator FireContinuously() {
         while(true) {
             GameObject instance = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+            Rigidbody2D rb = instance.GetComponent<Rigidbody2D>();
+            if (rb != null) {
+                rb.velocity = transform.up * projectileSpeed;
+            }
             Destroy(instance, projectileLifeTime);
             yield return new WaitForSeconds(firingRate);
         }
